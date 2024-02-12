@@ -41,16 +41,16 @@ VM을 만들긴 했는데, 문제가 있어요. 사실 GCP 홈페이지는 들�
 우선 GCP에서 설정해줘야 하는게 있어요. 바로 VM의 외부 IP 고정인데요, 구글에서 갓 생성한 VM은 외부 IP가 고정되어있지 않아요. 외부 IP를 알아야 해당 VM에 접속할 수 있는데, 이게 변해버리면 골치아프겠죠? 그래서 우리는 이걸 변하지 않게 해줄거에요.
 
 GCP의 VM 네트워크 설정으로 들어가보아요. (Menu > VPC Network > IP Address) 여기서 VM에 할당된 내부IP와 외부IP를 보실 수 있는데요, 외부IP가 바로 우리가 VM에 접속하기 위해 필요한 IP주소에요. 해당 IP주소를 "고정 IP 주소로 승급" 버튼만 눌러주면 쉽게 고정이 된답니다!
-<img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/bc4d0e44-ba8a-44b3-b2f9-c30d9bdefa07"/>
 
+<img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/bc4d0e44-ba8a-44b3-b2f9-c30d9bdefa07"/>
 
 이제 접속 대상을 확정했으니 VM에 접속할 방법을 찾아야겠죠? Putty라는 프로그램을 사용하면 쉽게 VM에 접속해, 콘솔 창을 열고 명령을 입력할 수 있어요.(https://putty.org/) 
 
 Putty를 다운로드하면 여러가지 패키지 프로그램이 같이 깔리는데요, 이 중 PuttyGen을 살펴보아요. PuttyGen은 RSA 암호 키를 생성해주는 프로그램이에요. RSA는 암호 생성의 한 방식으로, 공개 키와 비공개 키를 가지고 있어요. 공개 키가 등록되어 있는 서버(VM)에 클라이언트(Putty 등 사용자 층 프로그램)가 비공개 키를 제공하면, 서버에서 이를 확인해 접속을 승인해준답니다. 여기서 접속은 SSH라는 프로토콜을 통해서 이루어져요. SSH는 보안 쉘(콘솔)이라는 뜻으로, 비공개 키 파일을 가지고 있지 않으면 절대로 접속할 수 없답니다. 참고로 SSH 프로토콜의 통신 포트 번호는 22에요.
 
 PuttyGen을 켜고, RSA 2048 방식(2048은 비트 수를 뜻해요)을 체크하고, Generate버튼으로 키를 생성해요. 여기서 Public key라고 출력되는 부분을 key.txt라는 텍스트 문서에 저장해줘야 해요. 이 텍스트는 공개 키가 포함되어있어서, 나중에 서버에 등록해야 하거든요. 그리고 "Key comment" 부분에는 사용할 사용자명을 입력해요. 저는 kimdawn으로 할게요. 그리고 "Key passphrase" 부분에서는 비공개 키 파일을 열 때마다 제한을 거는 암호를 부여할 수 있어요. 설정이 끝났으면, Save Public Key 버튼으로 공개키를 key.key 파일로 저장하고, 비공개키를 key.ppk 파일로 저장해줍니다. 이 key.ppk 파일은 VM에 접속할때마다 가지고 있어야 하니 잘 보관해두세요!
-<img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/02f8c507-17df-4481-88b7-858c287f771f"/>
 
+<img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/02f8c507-17df-4481-88b7-858c287f771f"/>
 
 이제 GCP 서버에 공개 키를 등록해야 해요. (Menu > Compute Engine > Metadata > SSH Key) 여기에 아까 key.txt에 붙여놨던 텍스트를 복사해서 다시 붙여줍시다. 이제 VM에 원격 접속하기 위한 준비가 끝났어요!
 
@@ -61,8 +61,8 @@ Putty를 켜줍시다! 이제 비공개 키 파일을 등록해줘야 해요.(Co
 그 다음으로는 "login as: "라는 문구가 뜨는데, 여기서는 아까 RSA 키 만들때 썼던 사용자명을 입력하면 돼요. 저는 kimdawn 입력할게요. (아래 사진은 전에 테스트하던 것이라 다른 사용자로 되어 있어요.)
 
 그러고 나면 "Passphrase for key: "라는 문구가 떠요. 여기서도 역시 아까 RSA 키 만들때, 비공개 키 파일(PPK)에 걸었던 비밀번호를 입력하면 되어요!
-<img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/545bd262-9c98-47c6-b460-5e3cd4bcb154)"/>
 
+<img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/545bd262-9c98-47c6-b460-5e3cd4bcb154)"/>
 
 이 과정이 모두 끝난다면 정상적으로 접속이 가능하답니다!
 
@@ -75,8 +75,8 @@ Putty를 켜줍시다! 이제 비공개 키 파일을 등록해줘야 해요.(Co
 - 로그온 유형 : 키 파일 > 저희는 SSH 키를 통해 접속을 할 거기 때문에, 아까 Putty에서 그랬던 것처럼 키 파일을 제공해줘야 서버에서 접속을 승인해주겠죠? 키 파일 유형으로 해주세요.
 - 사용자 : 키 파일을 만들때 입력했던 사용자명을 입력하면 됩니다. 저는 kimdawn이네요.
 - 키 파일 : 아까 저장했던 key.ppk 파일을 찾아서 연결해주세요.
+- 
 <img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/486d89dd-c83a-4f55-ac16-543c7e01ede8"/>
-
 
 이렇게 설정을 해주시면, 연결할 수 있답니다! 이제 다음에 FileZilla를 사용할 때도 그냥 사이트 관리자에서 저장된 설정을 불러오면 돼요.
 
@@ -100,6 +100,7 @@ daemon(윈도우의 서비스 개념)명이 httpd로도 불리는 apache2, 설�
 `sudo apt install apache2`
 설치 후에는 `sudo service apache2 status` 명령어로 서비스 상태를 확인해볼 수 있어요.
 아래 사진과 같이 "active(running)" 상태가 되는지 확인해주세요.
+
 <img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/6c31078e-a798-49c3-8400-97bcf92d3dc7"/>
 
 서비스가 정상적으로 작동되는지 확인되면, 다음과 같은 명령어를 입력해줍니다.
@@ -147,8 +148,8 @@ PHP 7.4 버전에 해당하는 상태 창이 뜬다면 정상적으로 설치된
 이제 phpmyadmin에 접속해보아요! 아래의 URL을 브라우저에 입력해주세요.(xxx.xxx.xxx.xxx는 VM의 외부 IP를 의미)
 `xxx.xxx.xxx.xxx/phpmyadmin`
 접속이 되었다면, 로그인 화면이 뜰 거에요.
-<img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/86d9a817-4fa8-45d0-81b8-d73f5dcc6a01"/>
 
+<img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/86d9a817-4fa8-45d0-81b8-d73f5dcc6a01"/>
 
 이때 다음과 같이 입력해줍시다.
 
@@ -179,6 +180,7 @@ GRANT ALL PRIVILIGES ON *.* TO 'phpmyadmin'@'localhost';
 DNS 설정을 해봅시다(Menu > DNS > Records)! DNS란, 간단히 말하면 하나의 URL이 다른 URL을 가리키게 해주는(Redirect) 기술이에요. 이걸 설정해야 비로소 도메인을 산 의미가 생기죠!
 
 Cloudflare는 기본적으로 DNS 설정 몇 개를 권장하는데요, 다음과 같이 DNS 레코드를 생성해주면 돼요.
+
 <img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/afb9ea01-6201-4082-93b4-5aae1deaffcf"/>
 
 ## SPF, DKIM, DMARC 레코드 생성
@@ -349,9 +351,11 @@ FileZilla Server 창이 뜨고, "Logged on"이라는 문구가 보이면 접속�
 유저 설정 먼저 할거에요. 유저 관리 창(Edit > Users)에서 Add 버튼을 눌러 유저를 추가해주세요. 이름을 묻는 창이 나오는데, 저희는 `admin`으로 할거에요. 그리고는 다음과 같이 설정해주세요.
 - Password : (체크 선택) > 보안을 위해 암호를 설정해줍시다. 기억나는걸로 각자 잘 해주세요!
 - Force SSL for user login : (체크 선택) > 역시 보안을 위해, 로그인할 때 SSL 보안통신을 사용하도록 합니다.
+
 <img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/ee3f9272-207a-4509-8a8d-74fb2d70a642"/>
 
 설정이 되었으면, 좌측 사이드바의 Shared folders 탭으로 들어가주세요. Shared folders 영역에서 Add 버튼을 눌러 "XAMPP를 설치할 때 생성했던 가상 디스크 폴더"를 선택해주세요. 그리고 우측 Files와 Directories 영역의 체크박스에 모두 체크선택 해주세요. 이렇게 하면 `admin` 유저는 XAMPP가 설치된 모든 폴더에 대해 모든 관리 권한을 가지게 됩니다! 이제 OK버튼을 눌러 저장해주세요.
+
 <img width="75%" src="https://github.com/Xero-L/WebHosting/assets/147680492/ea3d67ef-ae60-4672-89da-300781e2642c"/>
 
 다음 설정을 위해서는 인증서와 비공개 키 파일이 필요해요. 리눅스 콘솔에서 OpenSSL이라는 라이브러리를 통해 만들 수도 있고, AWS나 Cloudflare에서 발급발을 수도 있답니다. 저는 Cloudflare에 도메인을 보유하고 있기 때문에, 하나 발급받아 오겠어요.
