@@ -124,13 +124,15 @@ PHP 라이브러리 자체, Apache와의 연동 라이브러리, MySQL과의 연
 설치되고 나면, 다음 명령어로 웹 서버의 메인 디렉터리에 phpinfo.php 파일을 생성합니다.
 `sudo vi /var/www/html/phpinfo.php`
 
-vi편집기로 진입한 다음, 아래 PHP 코드를 입력해주세요.
+편집기를 연 상태에서, i를 눌러 입력 모드로 전환해주세요. 이 상태에서만 파일 수정이 가능해요.
+그리고는 아래 PHP 코드를 입력해주세요.
 ```php
 <?php
   phpinfo();
 ?>
 ```
 
+Esc키를 눌러 명령 모드로 나오고, `:wq`를 입력해 저장해주세요.
 저장이 완료되면, 브라우저를 켜고, 아래 URL을 입력해보아요.(xxx.xxx.xxx.xxx 는 VM의 외부IP를 의미해요!)
 `http://xxx.xxx.xxx.xxx/phpinfo.php`
 PHP 7.4 버전에 해당하는 상태 창이 뜬다면 정상적으로 설치된 거에요.
@@ -161,7 +163,7 @@ PHP 7.4 버전에 해당하는 상태 창이 뜬다면 정상적으로 설치된
 
 MySQL 콘솔에서, 다음 명령어를 실행합니다. 명령의 뜻은 이래요: "localhost에서 접속한 phpmyadmin 유저에게는, 모든 데이터베이스 및 하위 테이블의 모든 권한을 주겠다"
 ```sql
-GRANT ALL PRIVILIGES ON *.* TO 'phpmyadmin'@'localhost';
+GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'localhost';
 ```
 
 권한 부여가 끝나면, 다음 명령어로 MySQL 콘솔에서 리눅스 콘솔로 빠져나와줄 수 있어요.
